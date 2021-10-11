@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jwnming.dao.PurchaseDAO">
+
+   <resultMap id="purchaseMap" type="Project">
+        <id property="id" column="id" />
+        <result column="name" property="name" />
+        <result column="declare_time" property="declare_time" />
+        <result column="funds" property="funds" />
+        <result column="description" property="description" />
+        <result column="documents_id" property="documents_id" />
+        <result column="category" property="category" />
+        <result column="user_id" property="user_id" />
+        <result column="user_name" property="user_name" />
+        <result column="status" property="status" />
+        <result column="finished" property="finished" />
+        <result column="exhibition" property="exhibition"></result>
+        <collection property="devices" ofType="Device">
+            <id property="device_id" column="device_id"/>
+            <result column="device_name" property="device_name" />
+            <result column="model" property="model" />
+            <result column="count" property="count" />
+            <result column="source" property="source" />
+            <result column="plan_expenditure" property="plan_expenditure" />
+            <result column="total_payment" property="total_payment" />
+            <result column="device_status" property="device_status" />
+            <result column="arrival_time" property="arrival_time" />
+        </collection>
+    </resultMap>
+
+    <select id="selectAll" resultMap="purchaseMap">
+        select p.*,d.* from project p left join device d on p.id = d.project_id where status = 1 and device_id is not null
+    </select>
+    <!--根据用户id查询-->
+    <select id="selectByUserId" resultType="Device" parameterType="java.lang.Integer">
+        select * from device where user_id = #{user_id}
+    </select>
+
+    <select id="selectDevice" resultType="Device" parameterType="java.lang.Integer">
+        select * from device where device_id = #{id}
+    </select>
+
+    <insert id="insertDevice" parameterType="Device">
+        insert into device values(0, #{device_name}, #{model}, #{count}, #{source}, #{plan_expenditure},
+        #{total_payment}, #{arrival_time}, #{device_status}, #{user_id}, #{project_id})
+    </insert>
+
+    <delete id="deleteDevice" parameterType="java.lang.Integer">
+        delete from device where device_id = #{id}
+    </delete>
+
+    <update id="updateDevice" parameterType="Device">
+        update device set device_name = #{device_name}, model = #{model}, count = #{count}, source = #{source},
+        plan_expenditure = #{plan_expenditure}, total_payment = #{total_payment}, arrival_time = #{arrival_time}
+        , device_status = #{device_status}, user_id = #{user_id}, project_id = #{project_id} where device_id = #{id}
+    </update>
+
+    <!--根据id修改状态-->
+    <update id="updateDeviceStatus" parameterType="java.lang.Integer">
+        update device set device_status = #{device_status} where device_id = #{id}
+    </update>
+    <!--添加验收时间-->
+    <update id="updateDeviceTime" >
+        update device set arrival_time = #{arrival_time} where device_id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jwnming.dao.MenuDAO">
+	<!-- 结果映射 -->
+	<resultMap type="Menu" id="menuMapper">
+		<id property="id" column="id"></id>
+		<result property="title" column="title"></result>
+		<result property="icon" column="icon"></result>
+		<result property="href" column="href"></result>
+		<!-- 关联属性 -->
+		<collection property="children" ofType="Menu">
+			<id property="id" column="cmenu_id"></id>
+			<result property="title" column="cmenu_title"></result>
+			<result property="icon" column="cmenu_icon"></result>
+			<result property="href" column="cmenu_href"></result>
+		</collection>
+	</resultMap>
+	
+	<!-- 获取所有目录 -->
+	<select id="selectAllMenu" resultMap="menuMapper">
+		select tmp.* from
+			(select p.*, c.id as cmenu_id,c.title as cmenu_title,c.icon as cmenu_icon,
+			c.href as cmenu_href from menu p left join menu c
+				on p.id = c.parent_id) tmp
+		where parent_id is null
+	</select>
+
+</mapper>

@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  context-path: /zzu
+  jsp-servlet:
+    init-parameters:
+      development: true
+spring:
+  mvc:
+    view:
+      prefix: /
+      suffix: .jsp
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/xmsb?useUnicode=true&characterEncoding=utf8
+    username: jwnming
+    password: mysql123
+  http:                #手动指定springboot的编码格式,springboot的默认编码格式是utf-8
+    encoding:
+      charset: utf-8
+      force: true
+    multipart:                #指定传输文件的大小
+      max-file-size: 10MB            #单个文件最大
+      max-request-size: 200MB        #多个文件一共最大
+mybatis:
+  type-aliases-package: com.jwnming.entity
+  mapper-locations: classpath:/com/jwnming/dao/mapper/*.xml
+
+
+pagehelper:   #分页插件
+  helper-dialect: mysql
+  params: count=countSql
+

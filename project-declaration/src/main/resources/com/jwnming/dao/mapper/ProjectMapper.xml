@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jwnming.dao.ProjectDAO">
+    <!--根据用户名获得-->
+    <select id="selectAllByUsername" parameterType="java.lang.String" resultType="Project">
+        select * from project where user_name #{user_name}
+    </select>
+    <!--根据用户ID获得所有-->
+    <select id="selectAllByUserId" parameterType="java.lang.Integer" resultType="Project">
+        select * from project where user_id = #{user_id}
+    </select>
+
+    <select id="selectAll" resultType="Project">
+        select * from project
+    </select>
+    <select id="selectAllStatus" resultType="Project">
+        select * from project where status = 0 or status = 2
+    </select>
+
+    <select id="selectAllPass" resultType="Project">
+        select * from project where status = 1
+    </select>
+
+
+    <select id="selectAllFinished" resultType="Project">
+        select * from project where finished = 1
+    </select>
+
+    <!--项目完成申请-->
+    <select id="selectAllFinishedConfirm" resultType="Project">
+        select * from project where finished = 2
+    </select>
+
+
+    <select id="selectAllExhibition" resultType="Project">
+        select * from project where exhibition = 1
+    </select>
+
+    <select id="selectProjectById" resultType="Project" parameterType="java.lang.Integer">
+        select * from project where id = #{id}
+    </select>
+
+    <select id="selectProjectByName" resultType="Project" parameterType="java.lang.String">
+        select * from project where name = #{name}
+    </select>
+
+    <insert id="insertProject" parameterType="Project">
+        insert into project values(0, #{name}, #{declare_time}, #{funds}, '/user/uploadfiles/project_logo/default.png', #{description}, #{documents_id},
+        #{category}, #{user_id}, #{user_name},#{status}, 0, 0)
+    </insert>
+
+    <delete id="deleteProject" parameterType="java.lang.Integer">
+        delete from project where id = #{id}
+    </delete>
+
+    <update id="updateProject" parameterType="Project">
+        update project set funds = #{funds}, description = #{description},
+        finished = #{finished} where id = #{id}
+    </update>
+    <!--修改状态-->
+    <update id="updateProjectStatus" parameterType="java.lang.Integer">
+        update project set status = #{status} where id = #{id}
+    </update>
+    <!--修改在前台页面的展示-->
+    <update id="updateProjectExhibition" parameterType="java.lang.Integer">
+        update project set exhibition = #{exhibition} where id = #{id}
+    </update>
+
+    <!--项目完成修改-->
+    <update id="updateProjectFinished" parameterType="java.lang.Integer">
+        update project set finished = #{finished} where id = #{id}
+    </update>
+
+    <!--添加logo-->
+    <update id="updateProjectLogo">
+        update project set logo = #{logo} where id = #{id}
+    </update>
+
+
+</mapper>

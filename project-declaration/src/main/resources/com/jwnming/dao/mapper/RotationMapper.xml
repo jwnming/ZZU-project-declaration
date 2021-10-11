@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jwnming.dao.RotationDAO">
+	<!-- 结果映射 -->
+	<resultMap type="Rotation" id="rotationMapper">
+		<id property="id" column="id"></id>
+		<result property="title" column="title"></result>
+		<result property="imagePath" column="image_path"></result>
+		<result property="uploadDate" column="upload_date"></result>
+		<result property="description" column="description"></result>
+		<result property="status" column="status"></result>
+		<result property="proportion" column="proportion"></result>
+	</resultMap>
+	
+	<!-- 获取所有 -->
+	<select id="selectAll" resultMap="rotationMapper">
+		select * from rotation
+	</select>
+	<!-- 获取所有前台展示 -->
+	<select id="selectAllRotationExhibition" resultMap="rotationMapper">
+		select * from rotation where status = 1 order by upload_date desc
+	</select>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="Rotation">
+		insert into rotation values(0,#{title},#{imagePath},#{uploadDate},#{description},#{status},#{proportion})
+	</insert>
+	<!-- 查询单个 -->
+	<select id="selectById" resultMap="rotationMapper" parameterType="Rotation">
+		select * from rotation where id=#{id}
+	</select>
+	
+	<!-- 修改 -->
+	<update id="update" parameterType="Rotation">
+		update rotation set title=#{title},description=#{description},
+			status=#{status},proportion=#{proportion} where id=#{id}
+	</update>
+	<!-- 删除 -->
+	<delete id="delete">
+		delete from rotation where id=#{id}
+	</delete>
+
+</mapper>
